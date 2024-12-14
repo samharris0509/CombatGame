@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Character>
+
+<div class="container">
+    <h2>Characters</h2>
+
+    <div class="row">
+        <div class="col-md-12">
+            <a asp-action="Create" class="btn btn-primary mb-3">Create New Character</a>
+
+            <div class="card">
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var character in Model)
+                            {
+                                <div class="list-group-item">
+                                    <h5>@character.Name</h5>
+                                    <p>Health: @character.Health | Attack: @character.Attack | Defense: @character.Defense</p>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No characters found.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

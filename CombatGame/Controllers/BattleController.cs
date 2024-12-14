@@ -2,48 +2,50 @@
 using CombatGame.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CombatGame.ViewModels;
 
 
-namespace CombatGame.Controllers
+public class BattleController : Controller
 {
-    public class BattleController : Controller
+    private readonly ApplicationDbContext _context;
+
+    public BattleController(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public BattleController(ApplicationDbContext context)
+    public IActionResult Index()
+    {
+        var viewModel = new BattleViewModel
         {
-            _context = context;
-        }
+            Teams = _context.Teams.Include(t => t.Characters).ToList()
+        };
+        return View(viewModel);
+    }
 
-        public ActionResult<BattleViewModel> Index()
+    [HttpPost]
+    public IActionResult StartBattle(BattleViewModel model)
+    {
+        var team1 = _context.Teams.Find(model.Team1Id);
+        var team2 = _context.Teams.Find(model.Team2Id);
+
+        // Record the battle
+        var battle = new Battle
         {
-            var teams = _context.Teams.Include(t => t.Characters).ToList();
-            var viewModel = new BattleViewModel { Teams = teams };
-            return View(viewModel);
-        }
+            Team1Id = model.Team1Id,
+            Team2Id = model.Team2Id,
+            BattleDate = DateTime.Now,
+            WinningTeamId = team1.Id  // For now, Team1 always wins
+        };
 
-        public ActionResult<Battle> Create()
-        {
-            ViewBag.Teams = _context.Teams.Include(t => t.Characters).ToList();
-            return View();
-        }
+        _context.Battles.Add(battle);
 
-        [HttpPost]
-        public ActionResult<Battle> Create(int team1Id, int team2Id)
-        {
-            var battle = new Battle
-            {
-                Team1Id = team1Id,
-                Team2Id = team2Id,
-                BattleDate = DateTime.Now
-            };
+        // Update team stats
+        team1.Wins++;
+        team2.Losses++;
 
-            _context.Battles.Add(battle);
-            _context.SaveChanges();
+        _context.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
-        }
-
+        TempData["Message"] = $"Battle Complete! {team1.Name} defeated {team2.Name}!";
+        return RedirectToAction("Index");
     }
 }

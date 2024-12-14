@@ -2,7 +2,15 @@
 @model BattleViewModel
 
 <div class="container">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
+        </div>
+    }
+
     <h2 class="text-center mb-4">Start a Battle</h2>
+
     <form asp-action="StartBattle" method="post">
         <div class="row">
             <div class="col-md-5">
@@ -20,9 +28,11 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-2 text-center d-flex align-items-center justify-content-center">
                 <h3>VS</h3>
             </div>
+
             <div class="col-md-5">
                 <div class="card">
                     <div class="card-header">
@@ -39,6 +49,7 @@
                 </div>
             </div>
         </div>
+
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary btn-lg">Start Battle!</button>
         </div>
