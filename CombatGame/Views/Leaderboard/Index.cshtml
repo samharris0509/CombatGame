@@ -1,0 +1,49 @@
+﻿@using CombatGame.ViewModels
+@model LeaderboardViewModel
+
+
+<div class="container">
+    <h2 class="text-center mb-4">Leaderboards</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Top Users</h3>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        @foreach (var user in Model.TopUsers)
+                        {
+                            <div class="list-group-item">
+                                <h5>@user.Username</h5>
+                                <p>Total Wins: @user.TotalWins</p>
+                                <p>Division: @user.Division.Name</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Top Teams</h3>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        @foreach (var team in Model.TopTeams)
+                        {
+                            <div class="list-group-item">
+                                <h5>@team.Name</h5>
+                                <p>Wins: @team.Wins | Losses: @team.Losses</p>
+                                <p>Owner: @team.User.Username</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

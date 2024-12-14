@@ -1,0 +1,33 @@
+﻿@model IEnumerable<User>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+
+<div class="container">
+    <h2>Users</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">Create New User</a>
+
+    <div class="row">
+        @foreach (var user in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>@user.Username</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Total Wins: @user.TotalWins</p>
+                        <p>Division: @(user.Division?.Name ?? "Unranked")</p>
+                        <p>Teams: @user.Teams.Count</p>
+                        <a asp-action="Profile" asp-route-id="@user.Id" class="btn btn-info">View Profile</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

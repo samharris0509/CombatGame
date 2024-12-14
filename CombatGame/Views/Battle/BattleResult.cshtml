@@ -1,0 +1,30 @@
+﻿@model Battle
+
+<div class="container">
+    <h2 class="text-center mb-4">Battle Results</h2>
+    <div class="battle-result">
+        <div class="row">
+            <div class="col-md-5 @(Model.WinningTeamId == Model.Team1Id ? "winner" : "")">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>@Model.Team1.Name</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 text-center">
+                <h3>VS</h3>
+            </div>
+            <div class="col-md-5 @(Model.WinningTeamId == Model.Team2Id ? "winner" : "")">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>@Model.Team2.Name</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <h4>Winner: @(Model.WinningTeamId == Model.Team1Id ? Model.Team1.Name : Model.Team2.Name)</h4>
+            <a asp-action="Index" class="btn btn-primary mt-3">Start New Battle</a>
+        </div>
+    </div>
+</div>

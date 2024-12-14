@@ -1,0 +1,65 @@
+﻿@model CombatGame.Areas.Admin.Models.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="container">
+    <h2>Admin Dashboard</h2>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <p class="card-text display-4">@Model.TotalUsers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Battles</h5>
+                    <p class="card-text display-4">@Model.TotalBattles</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Teams</h5>
+                    <p class="card-text display-4">@Model.TotalTeams</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3>Recent Battles</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Team 1</th>
+                        <th>Team 2</th>
+                        <th>Winner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var battle in Model.RecentBattles)
+                    {
+                        <tr>
+                            <td>@battle.BattleDate.ToString("MM/dd/yyyy")</td>
+                            <td>@battle.Team1.Name</td>
+                            <td>@battle.Team2.Name</td>
+                            <td>@(battle.WinningTeamId == battle.Team1Id ? battle.Team1.Name : battle.Team2.Name)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Team>
+
+@{
+    ViewData["Title"] = "Combat Game";
+}
+
+<div class="container">
+    <div class="text-center mb-4">
+        <h1 class="display-4">Welcome to Combat Game</h1>
+        <p>Create your team, battle others, and climb the rankings!</p>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col text-center">
+            <a asp-controller="Team" asp-action="Create" class="btn btn-primary m-2">Create Team</a>
+            <a asp-controller="Battle" asp-action="Index" class="btn btn-success m-2">Battle Arena</a>
+            <a asp-controller="User" asp-action="Index" class="btn btn-info m-2">View Users</a>
+            <a asp-controller="Leaderboard" asp-action="Index" class="btn btn-warning m-2">Leaderboards</a>
+            <a asp-controller="Character" asp-action="Create" class="btn btn-danger m-2">Create Character</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Top Teams</h3>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var team in Model)
+                            {
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-1">@team.Name</h5>
+                                        <small>Owner: @team.User.Username</small>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-success">Wins: @team.Wins</span>
+                                        <span class="badge bg-danger">Losses: @team.Losses</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-center">No teams available yet. Be the first to create one!</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

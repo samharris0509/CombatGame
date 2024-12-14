@@ -1,0 +1,35 @@
+﻿@model Character
+
+<div class="container">
+    <h2>Create New Character</h2>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
+        </div>
+    }
+
+
+
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Name">Character Name</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Health">Health (1-100)</label>
+            <input asp-for="Health" class="form-control" type="number" min="1" max="100" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Attack">Attack (1-50)</label>
+            <input asp-for="Attack" class="form-control" type="number" min="1" max="50" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Defense">Defense (1-50)</label>
+            <input asp-for="Defense" class="form-control" type="number" min="1" max="50" />
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Create Character</button>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary mt-3">Back to Home</a>
+    </form>
+</div>

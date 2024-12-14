@@ -1,0 +1,35 @@
+﻿@model Team
+
+<div class="container">
+    <h2>@Model.Name</h2>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h4>Team Stats</h4>
+            <p>Owner: @Model.User.Username</p>
+            <p>Wins: @Model.Wins</p>
+            <p>Losses: @Model.Losses</p>
+        </div>
+        <div class="col-md-6 text-right">
+            <a asp-controller="Character" asp-action="Create" asp-route-teamId="@Model.Id" class="btn btn-primary">Add Character</a>
+        </div>
+    </div>
+
+    <h3>Characters</h3>
+    <div class="row">
+        @foreach (var character in Model.Characters)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>@character.Name</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Health: @character.Health</p>
+                        <p>Attack: @character.Attack</p>
+                        <p>Defense: @character.Defense</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

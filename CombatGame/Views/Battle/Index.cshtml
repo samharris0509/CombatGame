@@ -1,0 +1,46 @@
+﻿@using CombatGame.ViewModels
+@model BattleViewModel
+
+<div class="container">
+    <h2 class="text-center mb-4">Start a Battle</h2>
+    <form asp-action="StartBattle" method="post">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Select Team 1</h3>
+                    </div>
+                    <div class="card-body">
+                        <select asp-for="Team1Id" class="form-control">
+                            @foreach (var team in Model.Teams)
+                            {
+                                <option value="@team.Id">@team.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 text-center d-flex align-items-center justify-content-center">
+                <h3>VS</h3>
+            </div>
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Select Team 2</h3>
+                    </div>
+                    <div class="card-body">
+                        <select asp-for="Team2Id" class="form-control">
+                            @foreach (var team in Model.Teams)
+                            {
+                                <option value="@team.Id">@team.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">Start Battle!</button>
+        </div>
+    </form>
+</div>

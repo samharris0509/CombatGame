@@ -1,0 +1,45 @@
+﻿@model User
+
+<div class="container">
+    <h2>@Model.Username's Profile</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Stats</h4>
+                </div>
+                <div class="card-body">
+                    <p>Total Wins: @Model.TotalWins</p>
+                    <p>Division: @(Model.Division?.Name ?? "Unranked")</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Teams</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.Teams.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var team in Model.Teams)
+                            {
+                                <div class="list-group-item">
+                                    <h5>@team.Name</h5>
+                                    <p>Wins: @team.Wins | Losses: @team.Losses</p>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No teams yet.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

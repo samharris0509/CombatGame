@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Team>
+
+<div class="container">
+    <h2>Teams</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">Create New Team</a>
+
+    <div class="row">
+        @foreach (var team in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>@team.Name</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Owner: @team.User.Username</p>
+                        <p>Characters: @team.Characters.Count</p>
+                        <p>Record: @team.Wins W - @team.Losses L</p>
+                        <a asp-action="Details" asp-route-id="@team.Id" class="btn btn-info">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
