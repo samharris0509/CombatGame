@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CombatGame.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241213055323_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241214035548_FixCharacterModel")]
+    partial class FixCharacterModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,43 @@ namespace CombatGame.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("Character", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Attack")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Defense")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Health")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TeamId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Characters");
+                });
 
             modelBuilder.Entity("CombatGame.Models.Achievement", b =>
                 {
@@ -79,38 +116,6 @@ namespace CombatGame.Migrations
                     b.HasIndex("Team2Id");
 
                     b.ToTable("Battles");
-                });
-
-            modelBuilder.Entity("CombatGame.Models.Character", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Attack")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Defense")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Health")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("Characters");
                 });
 
             modelBuilder.Entity("CombatGame.Models.Division", b =>
@@ -252,6 +257,25 @@ namespace CombatGame.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Character", b =>
+                {
+                    b.HasOne("CombatGame.Models.Team", "Team")
+                        .WithMany("Characters")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CombatGame.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CombatGame.Models.Achievement", b =>
                 {
                     b.HasOne("CombatGame.Models.User", "User")
@@ -268,13 +292,13 @@ namespace CombatGame.Migrations
                     b.HasOne("CombatGame.Models.Team", "Team1")
                         .WithMany()
                         .HasForeignKey("Team1Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CombatGame.Models.Team", "Team2")
                         .WithMany()
                         .HasForeignKey("Team2Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Team1");
@@ -282,23 +306,12 @@ namespace CombatGame.Migrations
                     b.Navigation("Team2");
                 });
 
-            modelBuilder.Entity("CombatGame.Models.Character", b =>
-                {
-                    b.HasOne("CombatGame.Models.Team", "Team")
-                        .WithMany("Characters")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Team");
-                });
-
             modelBuilder.Entity("CombatGame.Models.Move", b =>
                 {
-                    b.HasOne("CombatGame.Models.Character", "Character")
+                    b.HasOne("Character", "Character")
                         .WithMany("Moves")
                         .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Character");
@@ -309,7 +322,7 @@ namespace CombatGame.Migrations
                     b.HasOne("CombatGame.Models.User", "User")
                         .WithMany("Teams")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -326,7 +339,7 @@ namespace CombatGame.Migrations
                     b.Navigation("Division");
                 });
 
-            modelBuilder.Entity("CombatGame.Models.Character", b =>
+            modelBuilder.Entity("Character", b =>
                 {
                     b.Navigation("Moves");
                 });

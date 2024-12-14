@@ -20,40 +20,51 @@ namespace CombatGame.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Core relationships
-            modelBuilder.Entity<Team>()
-                .HasMany(t => t.Characters)
-                .WithOne(c => c.Team)
-                .HasForeignKey(c => c.TeamId);
+            base.OnModelCreating(modelBuilder);
 
+            // User relationships
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Teams)
                 .WithOne(t => t.User)
-                .HasForeignKey(t => t.UserId);
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Character relationships
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.Team)
+                .WithMany(t => t.Characters)
+                .HasForeignKey(c => c.TeamId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Character>()
                 .HasMany(c => c.Moves)
                 .WithOne(m => m.Character)
-                .HasForeignKey(m => m.CharacterId);
+                .HasForeignKey(m => m.CharacterId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Battle relationships
             modelBuilder.Entity<Battle>()
                 .HasOne(b => b.Team1)
                 .WithMany()
                 .HasForeignKey(b => b.Team1Id)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Battle>()
                 .HasOne(b => b.Team2)
                 .WithMany()
                 .HasForeignKey(b => b.Team2Id)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Seed Data
             modelBuilder.Entity<Division>().HasData(
-    new Division { Id = 1, Name = "Rookie", Description = "Starting Division" }
-);
-
+                new Division { Id = 1, Name = "Rookie", Description = "Starting Division" }
+            );
 
             modelBuilder.Entity<User>().HasData(
                 new User { Id = 1, Username = "FirstPlayer", DivisionId = 1 }
@@ -69,7 +80,6 @@ namespace CombatGame.Data
                     Losses = 2
                 }
             );
-
         }
     }
 }

@@ -8,8 +8,8 @@ public class Character
     public int Attack { get; set; }
     public int Defense { get; set; }
     public int? TeamId { get; set; }
-    public int UserId { get; set; }  // Add this line
-    public User User { get; set; }    // And this line
-    public Team Team { get; set; }
-    public List<Move> Moves { get; set; }
+    public virtual Team Team { get; set; }
+    public int UserId { get; set; }
+    public virtual User User { get; set; }
+    public virtual List<Move> Moves { get; set; }
 }

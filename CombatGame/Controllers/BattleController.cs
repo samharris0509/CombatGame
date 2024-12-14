@@ -23,25 +23,27 @@ namespace CombatGame.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
-        public ActionResult<Battle> StartBattle(int team1Id, int team2Id)
+        public ActionResult<Battle> Create()
         {
-            var team1 = _context.Teams.Include(t => t.Characters).FirstOrDefault(t => t.Id == team1Id);
-            var team2 = _context.Teams.Include(t => t.Characters).FirstOrDefault(t => t.Id == team2Id);
+            ViewBag.Teams = _context.Teams.Include(t => t.Characters).ToList();
+            return View();
+        }
 
+        [HttpPost]
+        public ActionResult<Battle> Create(int team1Id, int team2Id)
+        {
             var battle = new Battle
             {
                 Team1Id = team1Id,
                 Team2Id = team2Id,
-                BattleDate = DateTime.Now,
-                // Add battle logic here to determine winner
-                WinningTeamId = team1Id // Placeholder
+                BattleDate = DateTime.Now
             };
 
             _context.Battles.Add(battle);
             _context.SaveChanges();
 
-            return View("BattleResult", battle);
+            return RedirectToAction("Index", "Home");
         }
+
     }
 }

@@ -53,4 +53,27 @@
             </div>
         </div>
     </div>
+    <!-- Add the new Characters section here -->
+    <div class="row mt-4">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Recent Characters</h3>
+                </div>
+                <div class="card-body">
+                    @foreach (var character in ViewBag.Characters)
+                    {
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <h5>@character.Name</h5>
+                                <p>Health: @character.Health | Attack: @character.Attack | Defense: @character.Defense</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+   

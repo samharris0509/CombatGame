@@ -19,8 +19,7 @@ public class TeamController : Controller
 
     public ActionResult<Team> Create()
     {
-        var availableCharacters = _context.Characters.Where(c => c.TeamId == null).ToList();
-        ViewBag.Characters = availableCharacters;
+        ViewBag.Characters = _context.Characters.Where(c => c.TeamId == null).ToList();
         return View();
     }
 
@@ -30,11 +29,11 @@ public class TeamController : Controller
         team.UserId = 1;
         team.Wins = 0;
         team.Losses = 0;
-
         _context.Teams.Add(team);
         _context.SaveChanges();
-
-        TempData["Message"] = $"Team {team.Name} created successfully!";
+        TempData["Message"] = "Team created successfully!";
         return RedirectToAction("Index", "Home");
     }
+
+
 }

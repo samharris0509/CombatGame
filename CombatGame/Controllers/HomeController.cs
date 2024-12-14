@@ -19,11 +19,7 @@ namespace CombatGame.Controllers
 
         public ActionResult<IEnumerable<Team>> Index()
         {
-            if (!_context.Teams.Any())
-            {
-                return View(new List<Team>());
-            }
-
+            ViewBag.Characters = _context.Characters.Include(c => c.User).ToList();
             var topTeams = _context.Teams
                 .Include(t => t.User)
                 .OrderByDescending(t => t.Wins)
@@ -31,6 +27,7 @@ namespace CombatGame.Controllers
                 .ToList();
             return View(topTeams);
         }
+
 
         public IActionResult Privacy()
         {

@@ -4,7 +4,7 @@
 
 namespace CombatGame.Migrations
 {
-    public partial class AddUserIdToTeam : Migration
+    public partial class FixCharacterModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
